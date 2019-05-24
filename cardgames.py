@@ -1,6 +1,15 @@
 import random
 import time
 
+def functime(func):
+	def mep():
+		start = time.time()
+		func()
+		print time.time() - start
+
+	return mep
+
+
 class Deck():
 	def __init__(self):
 		self.deck = [n + " " + x for x in ["Spades", "Diamonds", "Hearts", "Clovers"] for n in ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"]]
