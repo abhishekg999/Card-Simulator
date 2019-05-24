@@ -31,7 +31,7 @@ class Deck():
 
 		self.table = []
 
-
+#so far only works for 3 card hands
 def pokerhands(cards, suit = ["Spades", "Diamonds", "Hearts", "Clovers"], number = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"], cardno = 3):
 	numcnt = {}
 	for n in number:
