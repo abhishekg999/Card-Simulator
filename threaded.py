@@ -1,34 +1,16 @@
 from cardgames import *
 import time
 import sys
+import threading
 
-@functime
-def main():
+mdict = {'sf':0, 's':0, 'f':0, 't':0, 'p':0, 'tries':0}
+def handler(tries):
 	deck = Deck()
-
-
 
 	ctr = 0
 
 	sf = s = f = t = p = 0
-
-	log = False
-
-	if len(sys.argv) != 1:
-		tries = int(sys.argv[1])
-	else:
-		print("Default tries 100000")
-		tries = 100000
-
-	if tries > 1000000:
-		print("Turining off log, too many tries... please wait")
-		log = False
-
-	if log:
-		file = open("log.txt", "w+")
-		print("Writing logfile..")
-		
-	time.sleep(.1)	
+	
 	try:
 		for _ in range(tries):
 
@@ -36,17 +18,12 @@ def main():
 			deck.shuffle()
 			hand = deck.deal(3)
 			ctr += 1 
-
-			
-
 			temp = str(pokerhands(hand))
 
-			if log:
-				file.write(str(hand))
-				file.write(temp + "\n")
 
 			if temp == "Straight Flush":
 				sf += 1
+
 
 			elif temp == "Straight":
 				s += 1
@@ -60,13 +37,37 @@ def main():
 			elif temp == "Pair":
 				p += 1
 
-			print str(ctr)," Hands Played         \r",
-		
-
 	except KeyboardInterrupt:
 		pass
-	print("\n")
+	mdict['sf'] += sf
+	mdict['s'] += s
+	mdict['f'] += f
+	mdict['t'] += t
+	mdict['p'] += p
+	mdict['tries'] += ctr
 
+
+
+@functime
+def main():
+	threads = []
+	for a in range(100):
+		t = threading.Thread(target=handler, args=[1000])
+		t.setDaemon(True)
+		threads.append(t)
+
+	for a in threads:
+		a.start()
+
+	for a in threads:
+		a.join()
+
+	ctr = mdict['tries']
+	sf = mdict['sf']
+	t = mdict['t']
+	s = mdict['s']
+	p = mdict['p']
+	f = mdict['f']
 	print("Hangs Played: " + str(ctr))
 	print("Straight Flush: " + str(sf) + ", " + str((float(sf)/float(ctr))*100.0) + "%")
 	print("Three of a Kind: " + str(t) + ", " + str((float(t)/float(ctr))*100.0) + "%")
@@ -76,3 +77,10 @@ def main():
 	print("None: " + str(ctr - (s+f+sf+t+p)) + ", " + str((float(ctr - (s+f+sf+t+p))/float(ctr))*100.0) + "%")
 
 main()
+
+
+
+
+
+
+

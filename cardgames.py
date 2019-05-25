@@ -5,7 +5,7 @@ def functime(func):
 	def mep():
 		start = time.time()
 		func()
-		print time.time() - start
+		print str(time.time() - start) + " seconds"
 
 	return mep
 
