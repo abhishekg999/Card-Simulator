@@ -14,31 +14,37 @@ class Deck():
 	def __init__(self):
 		self.deck = [n + " " + x for x in ["Spades", "Diamonds", "Hearts", "Clovers"] for n in ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"]]
 		self.table = []
+		self.hands = []
 
 	def shuffle(self):
 		random.shuffle(self.deck)
 
 	def deal(self, mt=1):
-		"""
-		for _ in range(mt):
-			print self.deck[0]
-			self.table.append(self.deck[0])
-			del self.deck[0]
-		"""
-		t = [self.deck[x-1] for x in range(mt)]
-		for _ in range(mt):
-			a = self.deck[0]
-			self.table.append(a)
-			self.deck.remove(a)
-		return t
+		self.t = []
+
+	###### SHOULD WORK NOW ######
+		try:
+			for x in range(mt):
+				self.t.append(self.deck[0])
+				self.table.append(self.deck[0])
+				del self.deck[0]
+			#self.deck = list(set(self.deck) - set(self.t))
+			#self.table = list(set(self.table) | set(self.t))
+		except:
+			print("Dealt " + str(len(self.t)) + " cards")
+			print("Deck empty")
+		return self.t
 	
 
 
-	def collect(self):
-		for x in self.table:
-			self.deck.append(x)
+	def collect(self, collectall=True, *args):
+		if collectall:
+			for x in self.table:
+				self.deck.append(x)
 
-		self.table = []
+			self.table = []
+			self.hands = []
+
 
 #so far only works for 3 card hands
 def pokerhands(cards, suit = ["Spades", "Diamonds", "Hearts", "Clovers"], number = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"], cardno = 3):
